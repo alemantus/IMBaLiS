@@ -84,7 +84,7 @@ void loop() {
     }
 
     startTime = micros();
-    easyFFT(int(vReal), 256, samplingFrequency);      //to get top five value of frequencies of X having 64 sample at 100Hz sampling
+    easyFFT((int*)(vReal), 256, samplingFrequency);      //to get top five value of frequencies of X having 64 sample at 100Hz sampling
     stopTime = micros();
 
     totalTimeEasyFFT = stopTime - startTime;
