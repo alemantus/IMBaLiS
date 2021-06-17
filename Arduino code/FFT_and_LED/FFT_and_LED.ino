@@ -40,7 +40,7 @@ void loop() {
   for (int i = 0; i < 9; i++) {
   
 
-    setVerticalBar(map(LED_buffer[i], 0, 10000, 0, 7), i, rgb);
+    setVerticalBar(map(LED_buffer[i], 0, 15000, 0, 7), i, rgb);
     Serial.print('\t');
     Serial.print(LED_buffer[i]);
     //Serial.print(map(LED_buffer[i], 0, 10000, 0, 7));
