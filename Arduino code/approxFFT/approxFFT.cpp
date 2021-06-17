@@ -97,6 +97,7 @@
   Update(16/06/21): made shorter for spesific usecase
 */
 
+
 void Approx_FFT(int in[], int N, int *out_r) {
   int a, c1, f, o, x, data_max, data_min = 0;
   long data_avg, data_mag, temp11;
@@ -409,5 +410,20 @@ void binning_4(int N, int *dataIn, int *dataOut) {
     //Serial.print(dataOut[i]);
     //Serial.println(" ");
   }
+}
+
+
+void binning_9(int N, int *dataIn, int *dataOut) {
+  memset(dataOut,0,sizeof(dataOut));
+  for (uint16_t i = 0; i < 9; i++) {
+    for (uint8_t j = 0; j <= i; j++){                                // Average 8 datapoints
+        dataOut[i] =+ dataIn[(1<<i)-1+j];
+        //Serial.print(4 * i - (N >> 4)*7 + 7);
+    }
+    dataOut[i] >> i;
+      //Serial.print(" ");
+      //Serial.print(dataOut[i]);
+      //Serial.println(" ");
+    }
 }
 //--------------------------------------------------------------------------------//

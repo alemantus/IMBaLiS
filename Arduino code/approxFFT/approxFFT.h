@@ -74,5 +74,6 @@ int fastRSS(int a, int b);
 
 //--------------------------------binning-----------------------------------------//
 void binning_4(int N, int *dataIn, int *dataOut);
+void binning_9(int N, int *dataIn, int *dataOut);
 //--------------------------------------------------------------------------------//
 #endif
