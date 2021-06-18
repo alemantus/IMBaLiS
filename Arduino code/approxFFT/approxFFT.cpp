@@ -279,7 +279,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
 
 //---------------------------------fast sine/cosine-------------------------------//
 int fast_sine(int Amp, int th) {
-  int temp3, m1, m2;
+  int temp3; //, m1, m2;
   byte temp1, temp2, test, quad, accuracy;
   accuracy = 5;  // set it value from 1 to 7, where 7 being most accurate but slowest
   // accuracy value of 5 recommended for typical applicaiton
@@ -301,10 +301,10 @@ int fast_sine(int Amp, int th) {
 
   temp1 = 0;
   temp2 = 128;    //2 multiple
-  m1 = 0;
-  m2 = Amp;
+  //m1 = 0;
+  //m2 = Amp;
 
-  temp3 = (m1 + m2) >> 1;
+  temp3 = (Amp) >> 1; //(m1 + m2) >> 1;
   Amp = temp3;
   for (int i = 0; i < accuracy; i++) {
     test = (temp1 + temp2) >> 1;
@@ -312,11 +312,11 @@ int fast_sine(int Amp, int th) {
     if (th > isin_data[test]) {
       temp1 = test;
       Amp = Amp + temp3;
-      m1 = Amp;
+      //m1 = Amp;
     } else if (th < isin_data[test]) {
       temp2 = test;
       Amp = Amp - temp3;
-      m2 = Amp;
+      //m2 = Amp;
     }
   }
 
