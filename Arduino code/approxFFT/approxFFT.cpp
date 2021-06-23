@@ -107,7 +107,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
   data_avg = 0;
   data_min = 0;
 
-  for (int i = 0; i < 12; i++) {         //calculating the levels
+  for (int i = 0; i < 12; i++) {              //finding the nearest lower 2^i amount of samples, the rest is not used.
     if (Pow2[i] <= N) {
       o = i;
     }
@@ -116,7 +116,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
   //int out_r[a];   //real part of transform
   int out_im[a];  //imaginory part of transform
 
-  for (int i = 0; i < a; i++) {         //getting min max and average for scalling
+  for (int i = 0; i < a; i++) {               //getting min max and average for scalling
     out_r[i] = 0; out_im[i] = 0;
     data_avg = data_avg + in[i];
     if (in[i] > data_max) {
@@ -159,7 +159,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
 
 
   x = 0;
-  for (int b = 0; b < o; b++) {              // bit reversal order stored in im_out array
+  for (int b = 0; b < o; b++) {               // bit reversal order stored in im_out array
     c1 = Pow2[b];
     f = Pow2[o] / (c1 + c1);
     for (int j = 0; j < c1; j++) {
@@ -168,7 +168,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
     }
   }
 
-  for (int i = 0; i < a; i++) {    // update input array as per bit reverse order
+  for (int i = 0; i < a; i++) {               // update input array as per bit reverse order
     out_r[i] = in[out_im[i]];
     out_im[i] = 0;
   }
@@ -176,15 +176,15 @@ void Approx_FFT(int in[], int N, int *out_r) {
   int i10, i11, n1, tr, ti;
   float e;
   int c, s, temp4;
-  for (int i = 0; i < o; i++) {                            //fft
-    i10 = Pow2[i];            // overall values of sine/cosine
-    i11 = Pow2[o] / Pow2[i + 1]; // loop with similar sine cosine
-    e = 1024 / Pow2[i + 1]; //1024 is equivalent to 360 deg
+  for (int i = 0; i < o; i++) {               //fft
+    i10 = Pow2[i];                            // overall values of sine/cosine
+    i11 = Pow2[o] / Pow2[i + 1];              // loop with similar sine cosine
+    e = 1024 / Pow2[i + 1];                   //1024 is equivalent to 360 deg
     e = 0 - e;
     n1 = 0;
 
     for (int j = 0; j < i10; j++) {
-      c = e * j; //c is angle as where 1024 unit is 360 deg
+      c = e * j;                              //c is angle as where 1024 unit is 360 deg
       while (c < 0) {
         c = c + 1024;
       }
@@ -220,7 +220,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
         out_r[n1 + i10] = out_r[n1] - tr;
         out_r[n1] = out_r[n1] + tr;
         if (out_r[n1] > 15000 || out_r[n1] < -15000) {
-          check = 1; //check for int size, it can handle only +31000 to -31000,
+          check = 1;                          //check for int size, it can handle only +31000 to -31000,
         }
 
         out_im[n1 + i10] = out_im[n1] - ti;
@@ -233,13 +233,13 @@ void Approx_FFT(int in[], int N, int *out_r) {
       }
     }
 
-    if (check == 1) {                                         // scalling the matrics if value higher than 15000 to prevent varible from overflowing
+    if (check == 1) {                         // scalling the matrics if value higher than 15000 to prevent varible from overflowing
       for (int i = 0; i < a; i++) {
         out_r[i] = out_r[i] >> 1;
         out_im[i] = out_im[i] >> 1;
       }
       check = 0;
-      scale = scale - 1;             // tracking overall scalling of input data
+      scale = scale - 1;                      // tracking overall scalling of input data
     }
   }
 
@@ -250,8 +250,8 @@ void Approx_FFT(int in[], int N, int *out_r) {
       out_im[i] = out_im[i] >> scale;
     }
     scale = 0;
-  } else {                                              // revers all scalling we done till here,
-    scale = 128 - scale; // in case of nnumber getting higher than 32000, we will represent in as multiple of 2^scale
+  } else {                                    // revers all scalling we done till here,
+    scale = 128 - scale;                      // in case of nnumber getting higher than 32000, we will represent in as multiple of 2^scale
   }
 
   /*
@@ -265,9 +265,8 @@ void Approx_FFT(int in[], int N, int *out_r) {
   */
 
   //---> here onward out_r contains amplitude
-  for (int i = 1; i < Pow2[o - 1]; i++) {      // getting amplitude from compex number
-    out_r[i] = fastRSS(out_r[i], out_im[i]);
-    // Approx RSS function used to calculated magnitude quickly
+  for (int i = 1; i < Pow2[o - 1]; i++) {     // getting amplitude from compex number
+    out_r[i] = fastRSS(out_r[i], out_im[i]);  // fastRSS function used to calculated magnitude quickly
 
     // un comment to print Amplitudes (1st value (offset) is not printed)
     //Serial.print(out_im[i]); Serial.print("\t"); Serial.println(out_r[i]);
@@ -279,7 +278,7 @@ void Approx_FFT(int in[], int N, int *out_r) {
 
 //---------------------------------fast sine/cosine-------------------------------//
 int fast_sine(int Amp, int th) {
-  int temp3; //, m1, m2;
+  int temp3, m1, m2;
   byte temp1, temp2, test, quad, accuracy;
   accuracy = 5;  // set it value from 1 to 7, where 7 being most accurate but slowest
   // accuracy value of 5 recommended for typical applicaiton
@@ -301,10 +300,10 @@ int fast_sine(int Amp, int th) {
 
   temp1 = 0;
   temp2 = 128;    //2 multiple
-  //m1 = 0;
-  //m2 = Amp;
+  m1 = 0;
+  m2 = Amp;
 
-  temp3 = (Amp) >> 1; //(m1 + m2) >> 1;
+  temp3 = (m1 + m2) >> 1;
   Amp = temp3;
   for (int i = 0; i < accuracy; i++) {
     test = (temp1 + temp2) >> 1;
@@ -312,11 +311,11 @@ int fast_sine(int Amp, int th) {
     if (th > isin_data[test]) {
       temp1 = test;
       Amp = Amp + temp3;
-      //m1 = Amp;
+      m1 = Amp;
     } else if (th < isin_data[test]) {
       temp2 = test;
       Amp = Amp - temp3;
-      //m2 = Amp;
+      m2 = Amp;
     }
   }
 
@@ -357,7 +356,7 @@ int fastRSS(int a, int b) {
     min = a;
   }
 
-  if (max > (min + min + min)) {
+  if (max > (min + min + min)) {    // return largest value if it is more than 3 times the small one, resulting in less than 5% error.
     return max;
   } else {
     temp1 = min >> 3;
@@ -380,7 +379,7 @@ int fastRSS(int a, int b) {
 
 
 //--------------------------------binning-----------------------------------------//
-void binning_4(int N, int *dataIn, int *dataOut) {
+/*void binning_4(int N, int *dataIn, int *dataOut) {
   for (uint16_t i = 0; i < (N >> 2); i++) {
     if (i > (N >> 2)) {                                 // Average 8 datapoints
       dataOut[i] = (dataIn[4 * i - (N >> 4) * 7] +
@@ -410,20 +409,68 @@ void binning_4(int N, int *dataIn, int *dataOut) {
     //Serial.print(dataOut[i]);
     //Serial.println(" ");
   }
-}
+}*/
 
 
 void binning_9(int N, int *dataIn, int *dataOut) {
-  memset(dataOut,0,sizeof(dataOut));
+  memset(dataOut,0,sizeof(dataOut));                                  // clear dataOut array
   for (uint16_t i = 0; i < 9; i++) {
-    for (uint8_t j = 0; j <= i; j++){                                // Average 8 datapoints
-        dataOut[i] =+ dataIn[(1<<i)-1+j];
-        //Serial.print(4 * i - (N >> 4)*7 + 7);
+    for (uint8_t j = 0; j <= i; j++){                                 // 
+        dataOut[i] = newMax(dataOut[i], dataIn[(1<<i)-1+j]);          //replace if higher than previous value
     }
-    dataOut[i] >> i;
       //Serial.print(" ");
       //Serial.print(dataOut[i]);
       //Serial.println(" ");
+  }
+}
+
+uint16_t newMax(uint16_t dataToCompare, int potentialReplacement) {
+  if (dataToCompare < potentialReplacement) {
+    return (uint16_t)potentialReplacement;
+  } else {
+    return dataToCompare;
+  }
+}
+
+void binning_12_16(uint16_t N, int *dataIn, uint16_t *dataOut) {
+  //memset(dataOut,0,sizeof(dataOut));
+  for (int i = 1; i < N/2; i++) {                           // start at index 1 because 0 is DC offset, and not a frequency
+    if (i <= 1) {
+      dataOut[0] = newMax(dataOut[0], dataIn[i]);           // the bins get progressively larger to get a log scale looking output
+      
+    } else if (i <= 3) {
+      dataOut[1] = newMax(dataOut[1], dataIn[i]);
+      
+    } else if (i <= 6) {
+      dataOut[2] = newMax(dataOut[2], dataIn[i]);
+      
+    } else if (i <= 8) {
+      dataOut[3] = newMax(dataOut[3], dataIn[i]);
+      
+    } else if (i <= 12) {
+      dataOut[4] = newMax(dataOut[4], dataIn[i]);
+      
+    } else if (i <= 20) {
+      dataOut[5] = newMax(dataOut[5], dataIn[i]);
+      
+    } else if (i <= 32) {
+      dataOut[6] = newMax(dataOut[6], dataIn[i]);
+      
+    } else if (i <= 49) {
+      dataOut[7] = newMax(dataOut[7], dataIn[i]);
+      
+    } else if (i <= 68) {
+      dataOut[8] = newMax(dataOut[8], dataIn[i]);
+      
+    } else if (i <= 88) {
+      dataOut[9] = newMax(dataOut[9], dataIn[i]);
+      
+    } else if (i <= 110) {
+      dataOut[10] = newMax(dataOut[10], dataIn[i]);       // the function takes N as number of samples, but is designed for 256 samples
+      
+    } else {
+      dataOut[11] = newMax(dataOut[11], dataIn[i]);
     }
+  }
 }
 //--------------------------------------------------------------------------------//
