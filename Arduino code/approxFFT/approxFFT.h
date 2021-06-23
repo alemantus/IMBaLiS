@@ -73,7 +73,9 @@ int fastRSS(int a, int b);
 //--------------------------------------------------------------------------------//
 
 //--------------------------------binning-----------------------------------------//
-void binning_4(int N, int *dataIn, int *dataOut);
+//void binning_4(int N, int *dataIn, int *dataOut);
 void binning_9(int N, int *dataIn, int *dataOut);
+uint16_t newMax(uint16_t dataToCompare, int potentialReplacement);
+void binning_12_16(uint16_t N, int *dataIn, uint16_t *dataOut);
 //--------------------------------------------------------------------------------//
 #endif
